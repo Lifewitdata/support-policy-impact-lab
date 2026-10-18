@@ -91,17 +91,17 @@ Run the pipeline first. Notebook code reads generated data and recomputes select
 - Seven-day capped time to first index-case resolution, including unresolved customers.
 - Unadjusted difference in means with Welch intervals; baseline-adjusted HC3 OLS as sensitivity.
 - Primary practical threshold plus simultaneous one-sided guardrail bounds.
+- Missing or incomplete primary, repeat-contact, escalation or refund results give "Not enough information to decide"; rollout is never recommended on partial evidence.
+- The decision brief is generated from the numbers: direction words (increased/decreased) follow the sign of each estimate, and targets are read from `config/analysis_plan.yaml`, so editing a threshold updates the verdict, brief and dashboard on the next run.
 - Predefined exploratory segments with multiplicity-adjusted q-values.
 - Respondent-only satisfaction shown beside response rates, excluded from the rollout gate.
 - Cost scenarios preserve covariance and do not monetise elapsed waiting time.
 
 All configuration thresholds are illustrative choices made for this exercise. The plan hash is recorded with each run for traceability, but this is not an externally registered experiment.
 
-## Publish on GitHub
+## Repository and hosting
 
-Suggested repository name: `support-policy-impact-lab`.
-
-Upload this folder's contents to your repository. Keep `README.md` at the repository root. The `.gitignore` excludes the reproducible raw data and database when using Git; executed notebooks, charts, code and findings remain reviewable. Do not upload your virtual environment or secrets. No GitHub repository has been created or published by this package.
+The `.gitignore` excludes the reproducible raw data, DuckDB database and marts; run the pipeline after cloning to regenerate them. Executed notebooks, charts, code and findings remain reviewable in the repository.
 
 For Streamlit hosting, use `app/app.py` as the entrypoint. The app needs `data/marts/experiment_mart.parquet` and the generated `outputs/` files. Include those explicitly in a deployment branch or run the pipeline during a suitable build process. A source-only upload will need that data preparation step.
 

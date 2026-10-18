@@ -19,6 +19,9 @@ Treatment minus control is the reported effect. Negative values improve the prim
 1. Experiment checks must pass: no sample-ratio mismatch at p < 0.001, unique customer grain and complete follow-up.
 2. The upper endpoint of the primary two-sided 95% confidence interval must be at most -2 hours. Merely excluding zero is not sufficient.
 3. The simultaneous one-sided upper confidence bounds must be no higher than +1 percentage point for repeat contact, +0.5 points for escalation and +$0.50 for refund spend per assigned customer.
+4. Every one of these results must exist for every assigned customer. If the primary, repeat-contact, escalation or refund result is missing or covers only part of either arm, the recommendation is "Not enough information to decide" and rollout is not recommended. A missing result is never treated as a pass.
+
+The values above are the defaults in `config/analysis_plan.yaml`. The pipeline reads the thresholds from that file, and the decision brief, dashboard and `outputs/decision.json` restate whichever targets were applied. The brief's direction words (increased, decreased, did not change) are generated from the signs of the current estimates rather than written by hand.
 
 Guardrail bounds use a large-sample normal approximation with Bonferroni alpha = 0.05 / 3, giving at least 95% simultaneous coverage for the three upper bounds under the approximation. The plotted two-sided 95% intervals are pointwise and should not be substituted for these decision bounds. The conjunction rule requires every criterion to pass. It does not select the most favourable outcome.
 

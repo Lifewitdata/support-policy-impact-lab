@@ -31,11 +31,11 @@
   },
   "passed": true,
   "row_counts": {
-    "refund_transactions": 61843,
-    "case_events": 226549,
-    "support_cases": 113968,
     "assignments": 100000,
+    "case_events": 226549,
     "customers": 100000,
-    "satisfaction_responses": 47032
+    "refund_transactions": 61843,
+    "satisfaction_responses": 47032,
+    "support_cases": 113968
   }
 }

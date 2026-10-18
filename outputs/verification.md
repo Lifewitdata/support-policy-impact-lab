@@ -4,7 +4,9 @@ The delivered project was executed locally with the versions in requirements.txt
 
 - Full pipeline completed for 100,000 synthetic customers.
 - All 27 source-integrity checks passed.
-- All 24 automated tests passed, including all five Streamlit pages and changes to outcome, segment and cost controls. The dashboard was checked with Streamlit AppTest; no browser-based visual test or hosted deployment is claimed.
+- All 44 automated tests passed, including all five Streamlit pages and changes to outcome, segment and cost controls. The dashboard was checked with Streamlit AppTest; no browser-based visual test or hosted deployment is claimed.
+- Decision-gate tests remove, blank out or partially remove each of the primary, repeat-contact, escalation and refund results and confirm the verdict is "Not enough information to decide". On the real mart, dropping any guardrail column, or blanking 10% of escalation values, gives the same verdict.
+- Brief-wording tests confirm that rising waiting time is reported as "increased", falling waiting time as "decreased", and that changed waiting-time and guardrail targets appear in both the verdict and the brief.
 - Four notebooks executed successfully: 28 code cells, with tables and four embedded plots. This environment blocks local kernel sockets, so execution used the documented IPython in-process mode. No outputs were invented or filled in by hand.
 - Regeneration produced identical SHA-256 hashes for all six source files.
 - The rebuilt DuckDB database was reopened read-only and contained 100,000 mart rows. Full refresh builds a new database before replacing prior output, avoiding dependence on an old recovery journal.

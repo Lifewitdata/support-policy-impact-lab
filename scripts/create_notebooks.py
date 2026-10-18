@@ -147,7 +147,7 @@ print('This is customer waiting time. It is not measured agent labour saved.')
 display(guards.select('metric','effect','ci_low','ci_high','guardrail_upper','guardrail_limit','guardrail_pass'))
 repeat=effects.filter(pl.col('metric')=='repeat_contact_7d').row(0,named=True)
 print(f"Repeat contacts changed by {100*repeat['effect']:.2f} percentage points.")
-print(f"Simultaneous upper bound: {100*repeat['guardrail_upper']:.2f} points; allowed limit: 1.00 point.")
+print(f"Simultaneous upper bound: {100*repeat['guardrail_upper']:.2f} points; allowed limit: {100*repeat['guardrail_limit']:.2f} points.")
 """),
 ('md','## Baseline-adjusted sensitivity\nThis model adjusts only for pre-assignment attributes. HC3 uncertainty allows heteroskedasticity. The unadjusted result remains the planned primary analysis.'),
 ('code',"display(pl.read_csv(ROOT/'outputs/tables/adjusted_primary.csv'))"),

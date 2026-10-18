@@ -7,7 +7,8 @@ import plotly.graph_objects as go
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from .common import ROOT, write_json
+from .common import ROOT, config, write_json
+from .brief import brief_text, headline, known
 from .generate_data import generate
 from .validate_data import validate
 from .build_marts import build
@@ -20,47 +21,23 @@ from .rollout_scenarios import decision, scenario
 
 def report(mart,effects,health,verdict):
     lookup={r['metric']:r for r in effects.iter_rows(named=True)}
-    a,b,c=lookup['unresolved_hours_7d'],lookup['repeat_contact_7d'],lookup['refund_usd_7d']
-    esc=lookup['escalated_7d']; survey=lookup['survey_responded']
     cost=scenario(mart,100000,12,18)
     write_json(ROOT/'outputs/default_scenario.json',cost)
-    next_step = 'Expand in stages with continued monitoring and a rollback plan.' if verdict['recommendation']=='Scale with monitoring' else 'Keep the current process as the default.'
-    text=f"""# Support policy decision brief
-
-**Recommendation: {verdict['recommendation']}.** This is a simulated experiment, not an Uber deployment.
-
-The simplified process reduced seven-day capped time to first resolution from {a['control_mean']:.2f} to {a['treatment_mean']:.2f} hours. The estimated change was {a['effect']:.2f} hours (95% CI {a['ci_low']:.2f} to {a['ci_high']:.2f}). That is an improvement in elapsed customer waiting time; it is not a measurement of agent labour saved.
-
-The trade-off is repeat contact. The rate moved from {b['control_mean']:.2%} to {b['treatment_mean']:.2%}, a change of {100*b['effect']:.2f} percentage points (95% CI {100*b['ci_low']:.2f} to {100*b['ci_high']:.2f}). The simultaneous one-sided upper bound is {100*b['guardrail_upper']:.2f} points, against a 1-point limit. A faster first resolution does not settle the full customer problem if more people return.
-
-Refund spend changed by ${c['effect']:.2f} per assigned customer (95% CI ${c['ci_low']:.2f} to ${c['ci_high']:.2f}). Escalation changed by {100*esc['effect']:.2f} percentage points. Guardrails that did not establish acceptable harm: {', '.join(verdict['failed_guardrails']) or 'none'}. A failed guardrail can mean harm or insufficient precision; inspect its interval before deciding which.
-
-## What I would do next
-
-{next_step} Review repeat-contact reasons for duplicate-charge cases, where the simulation deliberately models a harder support problem. Use the segment results to form a follow-up hypothesis, not to claim that differences between segments have been proved. Test a revised explanation or evidence-check step in a fresh customer-randomised experiment before broad rollout.
-
-For an assumed 100,000 future cases, 12 minutes per repeat contact and $18 per handling hour, incremental refund and repeat-contact handling costs are ${cost['incremental_cost']:,.0f} (95% sampling interval ${cost['ci_low']:,.0f} to ${cost['ci_high']:,.0f}). These assumptions are editable in the app. The scenario excludes unmeasured changes in initial handling effort, retention and satisfaction value; it is not total profit or ROI.
-
-## Why the comparison is usable
-
-There are {health['n_control']:,} control and {health['n_treatment']:,} treatment customers with a complete seven-day window. Randomisation is per customer, and analysis follows original assignment. The sample-ratio mismatch p-value is {health['srm_p_value']:.3f}. The largest absolute baseline standardised difference is {health['max_absolute_smd']:.3f}. Each one-to-many table is aggregated before joins, so repeated events cannot multiply refunds.
-
-## What this experiment cannot tell us
-
-Survey response was {survey['control_mean']:.1%} in control and {survey['treatment_mean']:.1%} in treatment. Satisfaction is measured among respondents and is not a causal estimate for all customers. Outcomes stop at seven days. We have not measured long-run retention, agent congestion, spillovers, actual process adherence or live costs. All patterns were generated from explicit assumptions, and the conclusions apply only to this simulation.
-"""
-    (ROOT/'outputs/decision_brief.md').write_text(text)
+    (ROOT/'outputs/decision_brief.md').write_text(brief_text(lookup,health,verdict,cost,config('analysis_plan')))
     metrics=['unresolved_hours_7d','repeat_contact_7d','escalated_7d','refund_usd_7d']
     labels=['Time to first resolution, capped (hours)','Repeat contact (percentage points)',
             'Escalation (percentage points)','Refund spend (USD/customer)']
     fig,axes=plt.subplots(2,2,figsize=(11,6),layout='constrained')
     for ax,m,label in zip(axes.flat,metrics,labels):
-        row=lookup[m];scale=100 if m in ['repeat_contact_7d','escalated_7d'] else 1
-        point=row['effect']*scale
-        ax.errorbar(point,0,xerr=[[point-row['ci_low']*scale],[row['ci_high']*scale-point]],fmt='o',color='#087f8c',capsize=7)
+        row=lookup.get(m);scale=100 if m in ['repeat_contact_7d','escalated_7d'] else 1
+        if known(row,'effect','ci_low','ci_high'):
+            point=row['effect']*scale
+            ax.errorbar(point,0,xerr=[[point-row['ci_low']*scale],[row['ci_high']*scale-point]],fmt='o',color='#087f8c',capsize=7)
+        else:
+            ax.text(0.5,0.5,'Not available',transform=ax.transAxes,ha='center',va='center',color='#b42318')
         ax.axvline(0,color='#88939f',ls='--');ax.set_yticks([]);ax.set_title(label,fontsize=11)
         ax.set_xlabel('Simplified policy minus current policy; 95% CI')
-    fig.suptitle('Faster resolution comes with more repeat contacts\nSynthetic support-policy experiment',fontsize=15)
+    fig.suptitle(headline(lookup)+'\nSynthetic support-policy experiment',fontsize=15)
     fig.savefig(ROOT/'outputs/figures/policy_effects.png',dpi=160);plt.close(fig)
     summary=pl.read_parquet(ROOT/'data/marts/policy_summary.parquet')
     chart=go.Figure(go.Bar(x=summary['policy'].to_list(),y=(summary['repeat_contact_7d']*100).to_list(),marker_color=['#334155','#087f8c']))
