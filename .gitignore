@@ -10,3 +10,4 @@ data/processed/*
 data/marts/*
 !data/processed/.gitkeep
 !data/marts/.gitkeep
+!data/marts/experiment_mart.parquet

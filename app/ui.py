@@ -1,5 +1,8 @@
 from pathlib import Path
 import json
+import sys
+# Streamlit Community Cloud installs requirements.txt only, not this package.
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 import streamlit as st
 import polars as pl
 import plotly.graph_objects as go
