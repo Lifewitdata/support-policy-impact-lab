@@ -1,0 +1,41 @@
+{
+  "source": "synthetic",
+  "checks": {
+    "customers_unique_key": true,
+    "customers_required_fields": true,
+    "assignments_unique_key": true,
+    "assignments_required_fields": true,
+    "support_cases_unique_key": true,
+    "support_cases_required_fields": true,
+    "case_events_unique_key": true,
+    "case_events_required_fields": true,
+    "refund_transactions_unique_key": true,
+    "refund_transactions_required_fields": true,
+    "satisfaction_responses_unique_key": true,
+    "satisfaction_responses_required_fields": true,
+    "one_assignment_per_customer": true,
+    "assignments_foreign_key": true,
+    "support_cases_foreign_key": true,
+    "case_events_foreign_key": true,
+    "refund_transactions_foreign_key": true,
+    "satisfaction_responses_foreign_key": true,
+    "resolution_after_opening": true,
+    "valid_assignment": true,
+    "nonnegative_refunds": true,
+    "valid_survey_scores": true,
+    "valid_events": true,
+    "correct_index_case": true,
+    "case_events_chronology": true,
+    "refund_transactions_chronology": true,
+    "satisfaction_responses_chronology": true
+  },
+  "passed": true,
+  "row_counts": {
+    "refund_transactions": 61843,
+    "case_events": 226549,
+    "support_cases": 113968,
+    "assignments": 100000,
+    "customers": 100000,
+    "satisfaction_responses": 47032
+  }
+}

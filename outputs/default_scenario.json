@@ -1,0 +1,9 @@
+{
+  "volume": 100000,
+  "repeat_handling_minutes": 12,
+  "handling_cost_per_hour": 18,
+  "incremental_cost": 50656.020198021775,
+  "ci_low": 44869.16689115114,
+  "ci_high": 56442.87350489242,
+  "assumption": "Same case mix and effects as the experiment; fixed user-supplied handling cost. CI covers sampling uncertainty only."
+}

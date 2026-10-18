@@ -1,0 +1,16 @@
+version: 1
+# Written before inspecting this project's generated results; not an external preregistration.
+assignment_unit: customer
+allocation_probability: 0.5
+followup_hours: 168
+primary_metric: unresolved_hours_7d
+primary_required_reduction_hours: 2.0
+alpha: 0.05
+power: 0.80
+planning_primary_sd_hours: 35.0
+planning_repeat_baseline: 0.12
+guardrail_limits:
+  repeat_contact_7d: 0.01
+  escalated_7d: 0.005
+  refund_usd_7d: 0.50
+segments: [issue_type, region, tenure_group]

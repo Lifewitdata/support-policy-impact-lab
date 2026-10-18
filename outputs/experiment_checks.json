@@ -1,0 +1,10 @@
+{
+  "n_control": 50180,
+  "n_treatment": 49820,
+  "srm_p_value": 0.25494516431731784,
+  "srm_pass": true,
+  "max_absolute_smd": 0.00752583731620379,
+  "unique_customer_grain": true,
+  "complete_followup": true,
+  "note": "SRM flags p<0.001. SMD is descriptive; |SMD|>0.1 prompts investigation, not outcome-based exclusions."
+}

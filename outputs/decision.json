@@ -1,0 +1,8 @@
+{
+  "recommendation": "Revise and retest",
+  "primary_pass": true,
+  "failed_guardrails": [
+    "repeat_contact_7d"
+  ],
+  "rule": "Primary 95% CI upper bound <= -2 hours AND every simultaneous guardrail upper bound <= its limit AND experiment checks pass."
+}

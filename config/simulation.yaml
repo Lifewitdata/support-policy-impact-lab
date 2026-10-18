@@ -1,0 +1,9 @@
+seed: 20261018
+n_customers: 100000
+start_date: '2026-03-01'
+enrolment_days: 28
+observation_end: '2026-04-08'
+# These are modelling choices, not observed Uber parameters.
+treatment_resolution_multiplier: 0.80
+treatment_repeat_increase: 0.018
+treatment_refund_increase_usd: 0.65

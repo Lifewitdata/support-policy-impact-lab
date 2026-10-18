@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+.env
+.streamlit/secrets.toml
+data/raw/*.parquet
+data/processed/*
+data/marts/*
+!data/processed/.gitkeep
+!data/marts/.gitkeep
