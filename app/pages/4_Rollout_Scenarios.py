@@ -14,7 +14,7 @@ if r['incremental_cost'] is None:
     st.error('Not enough information to decide: refund or repeat-contact results are missing.')
 else:
     st.metric('Estimated incremental cost',usd(r['incremental_cost'],0))
-    st.write(f"95% sampling interval: {usd(r['ci_low'],0)} to {usd(r['ci_high'],0)}")
+    st.write(f"95% sampling interval: {usd(r['ci_low'],0)} to {usd(r['ci_high'],0)}".replace('$','\\$'))
 st.caption(r['assumption'])
 st.warning('This is a partial-cost scenario, not total ROI. Initial-case effort, implementation costs, retention, congestion and future changes in customer mix are not measured.')
 st.write('The interval comes from a per-customer combined cost outcome, preserving the relationship between refunds and repeat contacts. Changing the assumptions does not change the experiment’s original rollout decision.')

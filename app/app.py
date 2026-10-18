@@ -25,4 +25,4 @@ with right:st.plotly_chart(effect_chart(effects,'repeat_contact_7d'),width='stre
 st.info('Use Policy Impact for the decision thresholds, Segment Explorer for follow-up hypotheses, and Rollout Scenarios to change cost assumptions.')
 st.download_button('Download the decision brief',(ROOT/'outputs/decision_brief.md').read_text(),'decision_brief.md','text/markdown')
 with st.expander('Read the full decision brief'):
-    st.markdown((ROOT/'outputs/decision_brief.md').read_text())
+    st.markdown((ROOT/'outputs/decision_brief.md').read_text().replace('$','\\$'))
